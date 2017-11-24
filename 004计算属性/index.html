@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="../vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <p>Original message:"{{message}}"</p>
+  <p>Computed reversed message: "{{ reversedMessage }}"</p>
+</div>
+<div id="app1">{{fullName}}</div>
+<ul id="for">
+  <li v-for="(item,index) in items">{{index}}{{item.meatball}}</li>
+</ul>
+<ul id="demo">
+  <li v-for="item in items">{{item}}</li>
+</ul>
+<!--显示过滤/排序结果-->
+<ul id="demo1">
+  <li v-for="n in meatball">{{n}}</li>
+</ul>
+<div id="demo3">
+  <input
+    v-model="newTodoText"
+    @keyup.enter="addNewTodo"
+    placeholder="Add a todo"
+  >
+  <ul>
+    <li
+      is="todo-item"
+      v-for="(todo,index) in todos"
+      :key="todo.id"
+      :title="todo.title"
+      @remove="todos.splice(index,1)"
+    ></li>
+  </ul>
+</div>
+<div id="demo4">
+  <button @click="greet($event)">Greet</button>
+</div>
+</body>
+</html>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello'
+    },
+    computed: {
+      reversedMessage: function () {
+        return this.message.split('').reverse().join('')
+      }
+    }
+  })
+  var vm = new Vue({
+    el: '#app1',
+    data: {
+      firstName: 'Foo',
+      lastName: 'Bar',
+      fullName: 'Foo Bar'
+    },
+    watch: {
+      firstName: function (val) {
+        this.fullName = val + '' + this.lastName
+      },
+    }
+  })
+  var app = new Vue({
+    el: '#for',
+    data: {
+      items: [
+        {meatball: "aaa"},
+        {meatball: "bbb"}
+      ]
+    }
+  })
+  var app = new Vue({
+    el: '#demo',
+    data: {
+      items: {
+        a: "aaa",
+        b: "bbb",
+        c: "ccc"
+      }
+    }
+  })
+  var app = new Vue({
+    el: '#demo1',
+    data: {
+      numbers: [1, 2, 3, 4, 5]
+    },
+    computed: {
+      meatball: function () {
+        return this.numbers.filter(function (number) {
+          return number % 2 === 0
+        })
+      }
+    }
+  })
+  Vue.component('todo-item', {
+    template: '<li>{{title}}<button @click="$emit(\'remove\')">X</button></li>',
+    props: ['title']
+  })
+  var app = new Vue({
+    el: '#demo3',
+    data: {
+      newTodoText: '',
+      todos: [
+        {
+          id: 1,
+          title: '111111111111111',
+        },
+        {
+          id: 2,
+          title: '222222222222222222222',
+        },
+        {
+          id: 3,
+          title: '333333333333333333333333',
+        }
+      ],
+      nextTodoId: 4
+    },
+    methods: {
+      addNewTodo: function () {
+        this.todos.push({
+          id: this.nextTodoId++,
+          title: this.newTodoText
+        })
+        this.newTodoText = ''
+      }
+    }
+  })
+  var app=new Vue({
+    el:'#demo4',
+    data:{
+      name:'vue.js'
+    },
+    methods:{
+      greet:function (event) {
+        alert('Hello'+this.name+'!')
+        if(event){
+          alert(event.target.tagName)
+        }
+      }
+    }
+  })
+</script>

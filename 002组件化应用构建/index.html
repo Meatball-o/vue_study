@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="../vue.js"></script>
+</head>
+<body>
+<!--注册组件-->
+<ol id="app">
+  <todo-item></todo-item>
+</ol>
+<!--定义组件，使之能够接受一个属性-->
+<div id="app1">
+  <ol>
+    <todo-item
+      v-for="(item,index) in meatball"
+      :todo="item"
+      :index="index"
+      :aa="'1,2,3'.split('2')"
+      :key="item.id">
+    </todo-item>
+  </ol>
+</div>
+</body>
+</html>
+<script>
+  var app = new Vue({
+    el: '#app',
+    components:{
+      'todo-item':{
+        template: '<li>这是一个代办项</li>'
+      }
+    }
+  })
+  var app1=new Vue({
+    el:'#app1',
+    components:{
+      'todo-item':{
+        props:['todo','index','aa'],
+        template:'<li>{{index}}{{todo.text}}</li>'
+      }
+    },
+    data:{
+      meatball:[
+        {id:0,text:'蔬菜'},
+        {id:1,text:'蔬菜1'},
+        {id:2,text:'蔬菜2'}
+      ]
+    }
+  })
+</script>
